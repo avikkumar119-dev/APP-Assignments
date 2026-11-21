@@ -1,0 +1,81 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Create customer churn dataset
+data = {
+    'CustomerID': [101, 102, 103, 104, 105, 106, 107, 108, 109, 110],
+    'Age': [25, 35, 45, np.nan, 29, 50, 40, 32, np.nan, 60],
+    'MonthlyCharges': [500, 700, 900, 600, np.nan, 800, 750, 650, 950, 1000],
+    'Tenure': [2, 12, 24, 6, 8, 36, 18, 10, 48, 60],
+    'Churn': ['Yes', 'No', 'No', 'Yes', 'Yes', 'No', 'No', 'Yes', 'No', 'No']
+}
+
+df = pd.DataFrame(data)
+
+# Display original data
+print("Original Dataset:")
+print(df)
+
+# 1. Data Cleaning
+print("\nMissing Values:")
+print(df.isnull().sum())
+
+# Fill missing values with column mean
+df['Age'] = df['Age'].fillna(df['Age'].mean())
+df['MonthlyCharges'] = df['MonthlyCharges'].fillna(df['MonthlyCharges'].mean())
+
+print("\nCleaned Dataset:")
+print(df)
+
+# 2. Summary Statistics
+print("\nSummary Statistics:")
+print(df.describe())
+
+# 3. Churn Analysis
+print("\nChurn Count:")
+print(df['Churn'].value_counts())
+
+# Calculate churn percentage
+churn_percentage = (df['Churn'].value_counts(normalize=True) * 100)
+print("\nChurn Percentage:")
+print(churn_percentage)
+
+# 4. NumPy Operations
+charges = np.array(df['MonthlyCharges'])
+
+print("\nNumPy Operations:")
+print("Mean Monthly Charges:", np.mean(charges))
+print("Maximum Monthly Charges:", np.max(charges))
+print("Minimum Monthly Charges:", np.min(charges))
+print("Standard Deviation:", np.std(charges))
+
+# 5. Visualization
+
+# Churn Count Bar Chart
+df['Churn'].value_counts().plot(kind='bar', color=['green', 'red'])
+plt.title("Customer Churn Count")
+plt.xlabel("Churn")
+plt.ylabel("Number of Customers")
+plt.show()
+
+# Age Distribution
+plt.hist(df['Age'], bins=5, color='skyblue', edgecolor='black')
+plt.title("Age Distribution of Customers")
+plt.xlabel("Age")
+plt.ylabel("Frequency")
+plt.show()
+
+# Monthly Charges Distribution
+plt.hist(df['MonthlyCharges'], bins=5, color='orange', edgecolor='black')
+plt.title("Monthly Charges Distribution")
+plt.xlabel("Monthly Charges")
+plt.ylabel("Frequency")
+plt.show()
+
+# Tenure vs Monthly Charges
+plt.scatter(df['Tenure'], df['MonthlyCharges'], color='purple')
+plt.title("Tenure vs Monthly Charges")
+plt.xlabel("Tenure (Months)")
+plt.ylabel("Monthly Charges")
+plt.show()
